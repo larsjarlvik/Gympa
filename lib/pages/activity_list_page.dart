@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:gympa/pages/add_activity_page.dart';
 import 'package:gympa/api/requests.dart';
+import 'package:intl/intl.dart';
 
 class ActivityListPage extends StatefulWidget {
   final RouteObserver routeObserver;
@@ -15,6 +16,7 @@ class ActivityListPage extends StatefulWidget {
 class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
   var activities = new List<Activities>();
   var loading = false;
+  final format = new DateFormat("yyyy-MM-dd");
 
   final RouteObserver routeObserver;
   
@@ -95,7 +97,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(0.0, 11.0, 0.0, 12.0),
-              child: Text('${activities[index].date}', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+              child: Text(format.format(activities[index].date), style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 13.0),
@@ -116,16 +118,19 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
   }
 
   _buildIcon(String icon, int minutes) {
-    return Opacity(
-      opacity: minutes > 0 ? 1.0 : 0.2,
-      child: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
-            child: Image(image: AssetImage('assets/$icon.png'), height: 20.0)
-          ),
-          Text('${minutes.toString()} min', style: TextStyle(color: Colors.white70)),
-        ],
+    return Expanded(
+      flex: 1,
+      child: Opacity(
+        opacity: minutes > 0 ? 1.0 : 0.2,
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
+              child: Image(image: AssetImage('assets/$icon.png'), height: 20.0)
+            ),
+            Text('${minutes.toString()} min', style: TextStyle(color: Colors.white70)),
+          ],
+        ),
       ),
     );
   }
