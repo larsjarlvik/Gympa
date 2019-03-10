@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 class Activities {
   DateTime date;
@@ -20,4 +21,21 @@ class Activities {
       walking: json['walking'],
     );
   }
+}
+
+List<Activities> groupActivities(List<Activities> activities) {
+  final groupedActivites = groupBy(activities, (Activities a) => a.date);
+  final summedActivites = new List<Activities>();
+
+  groupedActivites.forEach((d, a) {
+    summedActivites.add(Activities(
+      date: d,
+      gym: a.fold(0, (sum, a) => sum += a.gym),
+      sport: a.fold(0, (sum, a) => sum += a.sport),
+      running: a.fold(0, (sum, a) => sum += a.running),
+      walking: a.fold(0, (sum, a) => sum += a.walking),
+    ));
+  });
+
+  return summedActivites;
 }

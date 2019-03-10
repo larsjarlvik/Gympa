@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gympa/models/Activities.dart';
-import 'package:gympa/pages/AddActivityPage.dart';
+import 'package:gympa/models/activities.dart';
+import 'package:gympa/pages/add_activity_page.dart';
 import 'package:gympa/api/requests.dart';
 
 class ActivityListPage extends StatefulWidget {
@@ -33,8 +33,9 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     });
 
     var requestedActivies = await listActivites();
+
     setState(() {
-      activities = requestedActivies;
+      activities = groupActivities(requestedActivies);
       loading = false;
     });
   }

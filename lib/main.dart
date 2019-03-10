@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gympa/pages/ActivityListPage.dart';
+import 'package:gympa/pages/activity_list_page.dart';
 
 void main() => runApp(Gympa());
 

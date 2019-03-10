@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:gympa/models/Activities.dart';
+import 'package:gympa/models/activities.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:gympa/api/requests.dart';
-import 'package:gympa/models/Activities.dart';
+import 'package:gympa/models/activities.dart';
 import 'package:intl/intl.dart';
 
 class AddActivityPage extends StatefulWidget {
