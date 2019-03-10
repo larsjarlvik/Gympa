@@ -1,11 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:gympa/api/requests.dart';
 import 'package:gympa/models/Activities.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart';
 
 class AddActivityPage extends StatefulWidget {
   AddActivityPage({Key key}) : super(key: key);
@@ -28,7 +26,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
   _saveActivity() async {
     if (activities.gym < 1 && activities.sport < 1 && activities.running < 1 && activities.walking < 1) return;
 
-    setState(()  => saving = true);
+    setState(() => saving = true);
     await addActivities(activities);
 
     Navigator.pop(context);
