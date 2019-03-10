@@ -4,6 +4,12 @@ import 'package:gympa/pages/add_activity_page.dart';
 import 'package:gympa/api/requests.dart';
 import 'package:intl/intl.dart';
 
+enum Groupings {
+  Daily,
+  Weekly,
+  Monthly,
+}
+
 class ActivityListPage extends StatefulWidget {
   final RouteObserver routeObserver;
 
@@ -15,8 +21,10 @@ class ActivityListPage extends StatefulWidget {
 
 class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
   var activities = new List<Activities>();
+  var activeGrouping = Groupings.Daily;
   var groupedActivities = new List<Activities>();
   var loading = false;
+
   final format = new DateFormat("yyyy-MM-dd");
 
   final RouteObserver routeObserver;
@@ -40,6 +48,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     setState(() {
       activities = requestedActivies;
       groupedActivities = groupByDay(requestedActivies);
+      activeGrouping = Groupings.Daily;
       loading = false;
     });
   }
@@ -73,10 +82,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           _buildLoadingSpinner(),
           _buildGroupPills(),
           new Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-              child: _buildActivitiesList(),
-            ),
+            child: _buildActivitiesList(),
           ),
         ],
       ),
@@ -91,22 +97,24 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
   _buildGroupPills() {
     return Row(
       children: [
-        _buildPill('Daily', () => setState(() => groupedActivities = groupByDay(activities))),
-        _buildPill('Weekly', () => setState(() => groupedActivities = groupByWeek(activities))),
-        _buildPill('Monthly', () => setState(() => groupedActivities = groupByMonth(activities)))
+        _buildPill(Groupings.Daily, 'Daily', () => setState(() { groupedActivities = groupByDay(activities); activeGrouping = Groupings.Daily; })),
+        _buildPill(Groupings.Weekly, 'Weekly', () => setState(() { groupedActivities = groupByWeek(activities); activeGrouping = Groupings.Weekly; })),
+        _buildPill(Groupings.Monthly, 'Monthly', () => setState(() { groupedActivities = groupByMonth(activities); activeGrouping = Groupings.Monthly; }))
       ],
     );
   }
 
-  _buildPill(String text, VoidCallback callback) {
+  _buildPill(Groupings g, String text, VoidCallback callback) {
     return Expanded(
       flex: 1,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-        child: OutlineButton(
+        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+        child: MaterialButton(
+          clipBehavior: Clip.antiAlias,
+          elevation: g == activeGrouping ? 4.0 : 0.0,
+          color: g == activeGrouping ? Colors.teal : Colors.transparent,
           child: Text(text),
           onPressed: () => callback(),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
         ),
       )
     );
@@ -125,11 +133,11 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 11.0, 0.0, 12.0),
+              padding: EdgeInsets.fromLTRB(15.0, 11.0, 15.0, 12.0),
               child: Text(format.format(ca.date), style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 13.0),
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 13.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
