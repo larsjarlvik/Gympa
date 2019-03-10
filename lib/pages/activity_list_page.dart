@@ -15,6 +15,7 @@ class ActivityListPage extends StatefulWidget {
 
 class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
   var activities = new List<Activities>();
+  var groupedActivities = new List<Activities>();
   var loading = false;
   final format = new DateFormat("yyyy-MM-dd");
 
@@ -37,7 +38,8 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     var requestedActivies = await listActivites();
 
     setState(() {
-      activities = groupActivities(requestedActivies);
+      activities = requestedActivies;
+      groupedActivities = groupByDay(requestedActivies);
       loading = false;
     });
   }
@@ -69,6 +71,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
       body: Column(
         children: [
           _buildLoadingSpinner(),
+          _buildGroupPills(),
           new Expanded(
             child: Padding(
               padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
@@ -85,29 +88,55 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     );
   }
 
+  _buildGroupPills() {
+    return Row(
+      children: [
+        _buildPill('Daily', () => setState(() => groupedActivities = groupByDay(activities))),
+        _buildPill('Weekly', () => setState(() => groupedActivities = groupByWeek(activities))),
+        _buildPill('Monthly', () => setState(() => groupedActivities = groupByMonth(activities)))
+      ],
+    );
+  }
+
+  _buildPill(String text, VoidCallback callback) {
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+        child: OutlineButton(
+          child: Text(text),
+          onPressed: () => callback(),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+        ),
+      )
+    );
+  }
+
   _buildActivitiesList() {
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(
         color: Colors.white10,
       ),
-      itemCount: activities.length,
+      itemCount: groupedActivities.length,
       itemBuilder: (context, index) {
+        final Activities ca = groupedActivities[index];
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(0.0, 11.0, 0.0, 12.0),
-              child: Text(format.format(activities[index].date), style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+              child: Text(format.format(ca.date), style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 13.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildIcon('gym', activities[index].gym),
-                  _buildIcon('sport', activities[index].sport),
-                  _buildIcon('running', activities[index].running),
-                  _buildIcon('walking', activities[index].walking),
+                  _buildIcon('gym', ca.gym),
+                  _buildIcon('sport', ca.sport),
+                  _buildIcon('running', ca.running),
+                  _buildIcon('walking', ca.walking),
                 ],
               ),
             ),
