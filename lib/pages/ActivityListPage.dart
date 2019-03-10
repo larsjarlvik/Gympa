@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gympa/models/Activities.dart';
 import 'package:gympa/pages/AddActivityPage.dart';
-import 'package:http/http.dart';
+import 'package:gympa/api/requests.dart';
 
 class ActivityListPage extends StatefulWidget {
   final RouteObserver routeObserver;
@@ -34,21 +32,9 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
       loading = true; 
     });
 
-    var response = await get(
-      'https://gympa-3e24.restdb.io/rest/activities',
-      headers: {
-        'content-type': 'application/json',
-        'x-apikey': '5c83c653cac6621685acbd04',
-      }
-    );
-
-    var rawActivites = json.decode(response.body);
-    var parsedActivities = new List<Activities>();
-    rawActivites.forEach((p) => parsedActivities.add(Activities.fromJson(p)));
-    parsedActivities.sort((Activities a, Activities b) => b.date.compareTo(a.date));
-
+    var requestedActivies = await listActivites();
     setState(() {
-      activities = parsedActivities;
+      activities = requestedActivies;
       loading = false;
     });
   }
@@ -108,7 +94,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(0.0, 11.0, 0.0, 12.0),
-              child: Text('${activities[index].date.split('T')[0]}', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+              child: Text('${activities[index].date}', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 13.0),

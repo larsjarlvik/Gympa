@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:gympa/api/requests.dart';
+import 'package:gympa/models/Activities.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart';
 
@@ -13,47 +15,21 @@ class AddActivityPage extends StatefulWidget {
 }
 
 class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
-  Activity walking;
-  Activity running;
-  Activity gym;
-  Activity sport;
-  DateTime date;
+  Activities activities;
   bool saving = false;
 
   @override
   initState() {
     super.initState();
-    walking = new Activity('Walking', 0);
-    running = new Activity('Running', 0);
-    gym = new Activity('Gym', 0);
-    sport = new Activity('Sport', 0);
-    date = DateTime.now();
+    activities = new Activities(date: DateTime.now());
     saving = false;
   }
 
   _saveActivity() async {
-    if (gym.minutes < 1 && sport.minutes < 1 && running.minutes < 1 && walking.minutes < 1) return;
+    if (activities.gym < 1 && activities.sport < 1 && activities.running < 1 && activities.walking < 1) return;
 
-    setState(() {
-     saving = true;
-    });
-
-    Map<String, String> body = {
-      'date': '${date.year.toString()}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
-      'gym': gym.minutes.toString(),
-      'running': running.minutes.toString(),
-      'walking': walking.minutes.toString(),
-      'sport': sport.minutes.toString(),
-    };
-    
-    await post(
-      'https://gympa-3e24.restdb.io/rest/activities',
-      body: json.encode(body),
-      headers: {
-        'content-type': 'application/json',
-        'x-apikey': '5c83c653cac6621685acbd04',
-      }
-    );
+    setState(()  => saving = true);
+    await addActivities(activities);
 
     Navigator.pop(context);
   }
@@ -69,10 +45,10 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
         children: [
           _buildSavingSpinner(),
           _buildDatePicker(),
-          _buildActivityOption(gym),
-          _buildActivityOption(sport),
-          _buildActivityOption(running),
-          _buildActivityOption(walking)
+          _buildActivityOption('Gym', activities.gym, (value) => setState(() => activities.gym = value)),
+          _buildActivityOption('Sport', activities.sport, (value) => setState(() => activities.sport = value)),
+          _buildActivityOption('Running', activities.running, (value) => setState(() => activities.running = value)),
+          _buildActivityOption('Walking', activities.walking, (value) => setState(() => activities.walking = value))
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -101,7 +77,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
             initialValue: DateTime.now(),
             onChanged: (dt) {
               print(dt);
-              setState(() { date = dt; });
+              setState(() { activities.date = dt; });
             },
           ),
         ]
@@ -109,7 +85,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
     );
   }
 
-  _buildActivityOption(Activity activity) {
+  _buildActivityOption(String name, int minutes, void Function(int) callback) {
     return Padding(
       padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 0.0),
       child: Column(children: <Widget>[
@@ -123,12 +99,12 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
                   children: [
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
-                      child: Image(image: AssetImage('assets/${activity.name.toLowerCase()}.png'), height: 20.0)
+                      child: Image(image: AssetImage('assets/${name.toLowerCase()}.png'), height: 20.0)
                     ),
-                    Text(activity.name, style: TextStyle(color: Colors.white70)),
+                    Text(name, style: TextStyle(color: Colors.white70)),
                   ],
                 ),
-                Text('${activity.minutes.toString()} minutes')
+                Text('${minutes.toString()} minutes')
               ],
             ),
         ),
@@ -138,9 +114,9 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
           min: 0.0,
           max: 120.0,
           onChanged: (newRating) {
-            setState(() => activity.minutes = newRating.toInt());
+            callback(newRating.toInt());
           },
-          value: activity.minutes.toDouble(),
+          value: minutes.toDouble(),
         ),
       ]),
     );
