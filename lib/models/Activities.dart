@@ -34,7 +34,7 @@ List<Activities> groupByWeek(List<Activities> activities) {
 }
 
 List<Activities> groupByMonth(List<Activities> activities) {
-  final groupedActivites = groupBy(activities, (Activities a) => a.date.subtract(Duration(days: a.date.day)));
+  final groupedActivites = groupBy(activities, (Activities a) => a.date.subtract(Duration(days: a.date.day - 1)));
   return _sumActivities(groupedActivites);
 }
 
