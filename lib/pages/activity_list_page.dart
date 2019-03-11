@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gympa/components/page_container.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:gympa/pages/add_activity_page.dart';
 import 'package:gympa/api/requests.dart';
+import 'package:gympa/theme.dart';
 import 'package:intl/intl.dart';
 
 enum Groupings {
@@ -72,12 +74,8 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
 
   @override
   build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('GYMPA'),
-      ),
-      body: Column(
+    return pageContent(context, 'GYMPA', 
+      Column(
         children: [
           _buildLoadingSpinner(),
           _buildGroupPills(),
@@ -86,7 +84,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      FloatingActionButton(
         onPressed: _addActivity,
         tooltip: 'Add Activity',
         child: Icon(Icons.add),
@@ -134,7 +132,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(15.0, 11.0, 15.0, 12.0),
-              child: Text(format.format(ca.date), style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+              child: Text(format.format(ca.date), style: TextStyles.body(context)),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 13.0),
@@ -165,7 +163,10 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
               child: Image(image: AssetImage('assets/$icon.png'), height: 20.0)
             ),
-            Text('${minutes.toString()} min', style: TextStyle(color: Colors.white70)),
+            Opacity(
+              child: Text('${minutes.toString()} min', style: TextStyles.body(context)),
+              opacity: 0.7,
+            ),
           ],
         ),
       ),

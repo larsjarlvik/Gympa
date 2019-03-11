@@ -13,9 +13,10 @@ class Gympa extends StatelessWidget {
       navigatorObservers: [routeObserver],
       theme: ThemeData(
         brightness: Brightness.dark,
+        fontFamily: 'Cabin'
       ),
       home: new Scaffold(
-        body: ActivityListPage(routeObserver)
+        body: ActivityListPage(routeObserver),
       ),
     );
   }

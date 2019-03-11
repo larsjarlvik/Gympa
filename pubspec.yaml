@@ -26,3 +26,8 @@ flutter:
     - assets/sport.png
     - assets/running.png
     - assets/walking.png
+
+  fonts:
+    - family: Cabin
+      fonts:
+        - asset: assets/cabin.ttf

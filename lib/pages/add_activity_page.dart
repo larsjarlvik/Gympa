@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:gympa/api/requests.dart';
+import 'package:gympa/components/page_container.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:intl/intl.dart';
 
@@ -34,12 +35,8 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
 
   @override
   build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Add Activities'),
-      ),
-      body: Column(
+    return pageContent(context, 'ADD ACTIVITIES', 
+      Column(
         children: [
           _buildSavingSpinner(),
           _buildDatePicker(),
@@ -49,7 +46,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
           _buildActivityOption('Walking', activities.walking, (value) => setState(() => activities.walking = value))
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      FloatingActionButton(
         onPressed: _saveActivity,
         tooltip: 'Save Activities',
         child: Icon(Icons.add),
