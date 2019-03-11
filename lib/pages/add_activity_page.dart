@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:gympa/api/requests.dart';
+import 'package:gympa/components/spinner.dart';
 import 'package:gympa/components/page_container.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:intl/intl.dart';
@@ -38,7 +39,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
     return pageContent(context, 'ADD ACTIVITIES', 
       Column(
         children: [
-          _buildSavingSpinner(),
+          spinner(saving),
           _buildDatePicker(),
           _buildActivityOption('Gym', activities.gym, (value) => setState(() => activities.gym = value)),
           _buildActivityOption('Sport', activities.sport, (value) => setState(() => activities.sport = value)),
@@ -52,10 +53,6 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  _buildSavingSpinner() {
-    return saving ? LinearProgressIndicator() : SizedBox(height: 6.5);
   }
 
   _buildDatePicker() {

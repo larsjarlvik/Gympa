@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gympa/components/spinner.dart';
 import 'package:gympa/components/page_container.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:gympa/pages/add_activity_page.dart';
@@ -77,8 +78,12 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     return pageContent(context, 'GYMPA', 
       Column(
         children: [
-          _buildLoadingSpinner(),
           _buildGroupPills(),
+          spinner(loading),
+          Divider(
+            height: 1.0,
+            color: Colors.white10,
+          ),
           new Expanded(
             child: _buildActivitiesList(),
           ),
@@ -106,7 +111,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     return Expanded(
       flex: 1,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 6.0),
         child: MaterialButton(
           clipBehavior: Clip.antiAlias,
           elevation: g == activeGrouping ? 4.0 : 0.0,
@@ -122,6 +127,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(
         color: Colors.white10,
+        height: 5.0,
       ),
       itemCount: groupedActivities.length,
       itemBuilder: (context, index) {
@@ -131,11 +137,11 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(15.0, 11.0, 15.0, 12.0),
+              padding: EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 6.0),
               child: Text(format.format(ca.date), style: TextStyles.body(context)),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 13.0),
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -171,9 +177,5 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
         ),
       ),
     );
-  }
-  
-  _buildLoadingSpinner() {
-    return loading ? LinearProgressIndicator() : SizedBox(height: 6.5);
   }
 }
