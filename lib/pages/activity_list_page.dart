@@ -108,10 +108,8 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
       flex: 1,
       child: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 6.0),
-        child: MaterialButton(
-          clipBehavior: Clip.antiAlias,
-          elevation: g == activeGrouping ? 4.0 : 0.0,
-          color: g == activeGrouping ? Colors.teal : Colors.transparent,
+        child: FlatButton(
+          color: g == activeGrouping ? Colors.tealAccent.withAlpha(120) : Colors.transparent,
           child: Text(text),
           onPressed: () => callback(),
         ),
