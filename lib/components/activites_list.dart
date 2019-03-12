@@ -43,7 +43,7 @@ class ActivitiesList extends StatelessWidget {
   }
 
   _getSeparator(int index) {
-    return index > 0 && groupedActivities[index - 1].date.weekday < groupedActivities[index].date.weekday ? 
+    return index > 0 && groupedActivities[index + 1].date.weekday > groupedActivities[index].date.weekday ? 
       Divider(
         color: Colors.tealAccent,
         height: 20.0,
