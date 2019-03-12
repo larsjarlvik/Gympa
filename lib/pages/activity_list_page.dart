@@ -80,10 +80,6 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
         children: [
           _buildGroupPills(),
           spinner(loading),
-          Divider(
-            height: 1.0,
-            color: Colors.white10,
-          ),
           new Expanded(
             child: _buildActivitiesList(),
           ),
