@@ -51,7 +51,6 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
     setState(() {
       activities = requestedActivies;
       groupedActivities = groupByDay(requestedActivies);
-      activeGrouping = Groupings.Daily;
       loading = false;
     });
   }
@@ -75,17 +74,17 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
 
   @override
   build(BuildContext context) {
-    return pageContent(context, 'GYMPA', 
-      Column(
+    return PageContent('GYMPA', 
+      child: Column(
         children: [
           _buildGroupPills(),
-          spinner(loading),
+          Spinner(loading),
           new Expanded(
             child: _buildActivitiesList(),
           ),
         ],
       ),
-      FloatingActionButton(
+      actionButton: FloatingActionButton(
         onPressed: _addActivity,
         tooltip: 'Add Activity',
         child: Icon(Icons.add),

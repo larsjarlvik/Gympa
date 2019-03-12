@@ -36,10 +36,10 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
 
   @override
   build(BuildContext context) {
-    return pageContent(context, 'ADD ACTIVITIES', 
-      Column(
+    return PageContent('ADD ACTIVITIES',
+      child: Column(
         children: [
-          spinner(saving),
+          Spinner(saving),
           _buildDatePicker(),
           _buildActivityOption('Gym', activities.gym, (value) => setState(() => activities.gym = value)),
           _buildActivityOption('Sport', activities.sport, (value) => setState(() => activities.sport = value)),
@@ -47,7 +47,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
           _buildActivityOption('Walking', activities.walking, (value) => setState(() => activities.walking = value))
         ],
       ),
-      FloatingActionButton(
+      actionButton: FloatingActionButton(
         onPressed: _saveActivity,
         tooltip: 'Save Activities',
         child: Icon(Icons.add),
