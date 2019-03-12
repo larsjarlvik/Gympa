@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gympa/components/activites_list.dart';
+import 'package:gympa/components/chart.dart';
 import 'package:gympa/components/spinner.dart';
 import 'package:gympa/components/page_container.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:gympa/pages/add_activity_page.dart';
 import 'package:gympa/api/requests.dart';
-import 'package:gympa/theme.dart';
-import 'package:intl/intl.dart';
 
 enum Groupings {
   Daily,
@@ -78,7 +77,12 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
         children: [
           _buildGroupPills(),
           Spinner(loading),
-          new Expanded(
+          Chart(groupedActivities),
+          Divider(
+            height: 1.0,
+            color: Colors.white10,
+          ),
+          Expanded(
             child: ActivitiesList(groupedActivities),
           ),
         ],
