@@ -26,6 +26,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
   }
 
   _saveActivity() async {
+    if (saving) return;
     if (activities.gym < 1 && activities.sport < 1 && activities.running < 1 && activities.walking < 1) return;
 
     setState(() => saving = true);
