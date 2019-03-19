@@ -1,27 +1,40 @@
 import 'dart:convert';
 
+import 'package:gympa/api/config.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
+Config _config;
+
+_verifyConfig() async {
+  if(_config == null) {
+    final loader = new ConfigLoader(configPath: 'assets/config.json');
+    _config = await loader.load();
+  }
+}
+
 Future<List<Activities>> listActivites() async {
-    var response = await get(
-      'https://gympa-3e24.restdb.io/rest/activities',
-      headers: {
-        'content-type': 'application/json',
-        'x-apikey': '5c83c653cac6621685acbd04',
-      }
-    );
+  await _verifyConfig();
 
-    var rawActivites = json.decode(response.body);
-    var parsedActivities = new List<Activities>();
-    rawActivites.forEach((p) => parsedActivities.add(Activities.fromJson(p)));
-    parsedActivities.sort((Activities a, Activities b) => b.date.compareTo(a.date));
+  var response = await get(
+    _config.url,
+    headers: {
+      'content-type': 'application/json',
+      'x-apikey': _config.apikey,
+    }
+  );
 
-    return parsedActivities;
+  var rawActivites = json.decode(response.body);
+  var parsedActivities = new List<Activities>();
+  rawActivites.forEach((p) => parsedActivities.add(Activities.fromJson(p)));
+  parsedActivities.sort((Activities a, Activities b) => b.date.compareTo(a.date));
+
+  return parsedActivities;
 }
 
 Future<void> addActivities(Activities activities) async {
+  await _verifyConfig();
   final format = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
   final Map<String, String> body = {
@@ -33,11 +46,11 @@ Future<void> addActivities(Activities activities) async {
   };
   
   await post(
-    'https://gympa-3e24.restdb.io/rest/activities',
+    _config.url,
     body: json.encode(body),
     headers: {
       'content-type': 'application/json',
-      'x-apikey': '5c83c653cac6621685acbd04',
+      'x-apikey': _config.apikey,
     }
   );
 }
