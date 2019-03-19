@@ -1,6 +1,12 @@
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 
+enum Groupings {
+  Daily,
+  Weekly,
+  Monthly,
+}
+
 class Activities {
   DateTime date;
   int gym;
@@ -23,17 +29,28 @@ class Activities {
   }
 }
 
-List<Activities> groupByDay(List<Activities> activities) {
+List<Activities> group(List<Activities> activities, Groupings grouping) {
+    switch (grouping) {
+      case Groupings.Daily:
+        return _groupByDay(activities);
+      case Groupings.Weekly:
+        return _groupByWeek(activities);
+      case Groupings.Monthly:
+        return _groupByMonth(activities);
+    }
+}
+
+List<Activities> _groupByDay(List<Activities> activities) {
   final groupedActivites = groupBy(activities, (Activities a) => a.date);
   return _sumActivities(groupedActivites);
 }
 
-List<Activities> groupByWeek(List<Activities> activities) {
+List<Activities> _groupByWeek(List<Activities> activities) {
   final groupedActivites = groupBy(activities, (Activities a) => a.date.subtract(Duration(days: a.date.weekday)));
   return _sumActivities(groupedActivites);
 }
 
-List<Activities> groupByMonth(List<Activities> activities) {
+List<Activities> _groupByMonth(List<Activities> activities) {
   final groupedActivites = groupBy(activities, (Activities a) => a.date.subtract(Duration(days: a.date.day - 1)));
   return _sumActivities(groupedActivites);
 }

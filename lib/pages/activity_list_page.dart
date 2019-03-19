@@ -7,12 +7,6 @@ import 'package:gympa/models/activities.dart';
 import 'package:gympa/pages/add_activity_page.dart';
 import 'package:gympa/api/requests.dart';
 
-enum Groupings {
-  Daily,
-  Weekly,
-  Monthly,
-}
-
 class ActivityListPage extends StatefulWidget {
   final RouteObserver routeObserver;
 
@@ -48,7 +42,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
 
     setState(() {
       activities = requestedActivies;
-      groupedActivities = groupByDay(requestedActivies);
+      groupedActivities = group(activities, activeGrouping);
       loading = false;
     });
   }
@@ -98,9 +92,9 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
   _buildGroupPills() {
     return Row(
       children: [
-        _buildPill(Groupings.Daily, 'Daily', () => setState(() { groupedActivities = groupByDay(activities); activeGrouping = Groupings.Daily; })),
-        _buildPill(Groupings.Weekly, 'Weekly', () => setState(() { groupedActivities = groupByWeek(activities); activeGrouping = Groupings.Weekly; })),
-        _buildPill(Groupings.Monthly, 'Monthly', () => setState(() { groupedActivities = groupByMonth(activities); activeGrouping = Groupings.Monthly; }))
+        _buildPill(Groupings.Daily, 'Daily', () => setState(() { groupedActivities = group(activities, Groupings.Daily); activeGrouping = Groupings.Daily; })),
+        _buildPill(Groupings.Weekly, 'Weekly', () => setState(() { groupedActivities = group(activities, Groupings.Weekly); activeGrouping = Groupings.Weekly; })),
+        _buildPill(Groupings.Monthly, 'Monthly', () => setState(() { groupedActivities = group(activities, Groupings.Monthly); activeGrouping = Groupings.Monthly; }))
       ],
     );
   }

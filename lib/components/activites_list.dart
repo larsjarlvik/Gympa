@@ -3,6 +3,16 @@ import 'package:gympa/models/activities.dart';
 import 'package:gympa/theme.dart';
 import 'package:intl/intl.dart';
 
+final _weekdays = [
+  'MON',
+  'TUE',
+  'WED',
+  'THU',
+  'FRI',
+  'SAT',
+  'SUN',
+];
+
 class ActivitiesList extends StatelessWidget {
   final List<Activities> groupedActivities;
   final format = new DateFormat("yyyy-MM-dd");
@@ -22,7 +32,12 @@ class ActivitiesList extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(15.0, 6.0, 15.0, 6.0),
-              child: Text(format.format(ca.date), style: TextStyles.body(context)),
+              child: Row(
+                children: [
+                  Container(width: 38, child: Text(_weekdays[ca.date.weekday - 1], style: TextStyles.body(context))),
+                  Text(format.format(ca.date), style: TextStyles.body(context, alpha: 150)),
+                ],
+              ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
@@ -65,10 +80,7 @@ class ActivitiesList extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
               child: Image(image: AssetImage('assets/$icon.png'), height: 20.0)
             ),
-            Opacity(
-              child: Text('${minutes.toString()} min', style: TextStyles.body(context)),
-              opacity: 0.7,
-            ),
+            Text('${minutes.toString()} min', style: TextStyles.body(context, alpha: 150)),
           ],
         ),
       ),

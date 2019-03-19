@@ -11,13 +11,14 @@ class TextStyles {
   }
 
   static TextStyle body(BuildContext context, {
-    fontWeight: FontWeight.w300
+    fontWeight: FontWeight.w300,
+    alpha: 255
   }) {
     return Theme.of(context).textTheme.body1.copyWith(
       fontSize: 14.0,
       height: 1.4,
       fontWeight: fontWeight,
-      color: Color.fromARGB(255, 239, 252, 255),
+      color: Color.fromARGB(alpha, 239, 252, 255),
     );
   }
 }

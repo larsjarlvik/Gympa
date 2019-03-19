@@ -23,11 +23,17 @@ class Activity {
 class Chart extends StatelessWidget {
   final List<Activities> groupedActivities;
   final format = new DateFormat("yyyy-MM-dd");
+
+  static int listLength = -1;
   
   Chart(List<Activities> groupedActivities): groupedActivities = groupedActivities;
   
   @override
   Widget build(BuildContext context) {
+    var series = _buildSeries();
+    var animate = groupedActivities.length != listLength;
+    listLength = groupedActivities.length;
+
     return new SizedBox(
       height: 200.0,
       child: Container(
@@ -35,8 +41,8 @@ class Chart extends StatelessWidget {
           color: Color.fromARGB(35, 0, 0, 0)
         ),
         child: charts.BarChart(
-          _buildSeries(),
-          animate: true,
+          series,
+          animate: animate,
           defaultRenderer: new charts.BarRendererConfig(
             groupingType: charts.BarGroupingType.grouped, 
             strokeWidthPx: 1.0,
