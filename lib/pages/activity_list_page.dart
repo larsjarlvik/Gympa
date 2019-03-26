@@ -77,7 +77,7 @@ class _ActivityListPage extends State<ActivityListPage> with RouteAware  {
             color: Colors.white10,
           ),
           Expanded(
-            child: ActivitiesList(groupedActivities),
+            child: ActivitiesList(groupedActivities, activeGrouping),
           ),
         ],
       ),

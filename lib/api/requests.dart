@@ -25,9 +25,9 @@ Future<List<Activities>> listActivites() async {
     }
   );
 
-  var rawActivites = json.decode(response.body);
+  var rawActivities = json.decode(response.body);
   var parsedActivities = new List<Activities>();
-  rawActivites.forEach((p) => parsedActivities.add(Activities.fromJson(p)));
+  rawActivities.forEach((p) => parsedActivities.add(Activities.fromJson(p)));
   parsedActivities.sort((Activities a, Activities b) => b.date.compareTo(a.date));
 
   return parsedActivities;

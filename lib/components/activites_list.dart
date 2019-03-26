@@ -15,9 +15,13 @@ final _weekdays = [
 
 class ActivitiesList extends StatelessWidget {
   final List<Activities> groupedActivities;
+  final Groupings groupings;
+
   final format = new DateFormat("yyyy-MM-dd");
 
-  ActivitiesList(List<Activities> groupedActivities) : groupedActivities = groupedActivities;
+  ActivitiesList(List<Activities> groupedActivities, Groupings groupings) : 
+    groupedActivities = groupedActivities,
+    groupings = groupings;
   
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class ActivitiesList extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(15.0, 6.0, 15.0, 6.0),
               child: Row(
                 children: [
-                  Container(width: 38, child: Text(_weekdays[ca.date.weekday - 1], style: TextStyles.body(context))),
+                  groupings == Groupings.Daily ? Container(width: 38, child: Text(_weekdays[ca.date.weekday - 1], style: TextStyles.fixed(context))) : Container(),
                   Text(format.format(ca.date), style: TextStyles.body(context, alpha: 150)),
                 ],
               ),

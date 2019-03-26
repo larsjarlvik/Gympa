@@ -33,3 +33,6 @@ flutter:
     - family: Cabin
       fonts:
         - asset: assets/cabin.ttf
+    - family: Hasklig
+      fonts:
+        - asset: assets/hasklig.ttf

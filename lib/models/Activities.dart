@@ -38,6 +38,8 @@ List<Activities> group(List<Activities> activities, Groupings grouping) {
       case Groupings.Monthly:
         return _groupByMonth(activities);
     }
+
+    return List<Activities>();
 }
 
 List<Activities> _groupByDay(List<Activities> activities) {
