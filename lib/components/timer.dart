@@ -32,10 +32,7 @@ class _Timer extends State<Timer> {
   }
 
   _formatDuration(Duration duration) {
-      twoDigits(int n) {
-        if (n >= 10) return "$n";
-        return "0$n";
-      }
+      twoDigits(int n) => n >= 10 ? '$n' : '0$n';
 
       final twoDigitMinutes = twoDigits(duration.inMinutes);
       final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
@@ -46,18 +43,21 @@ class _Timer extends State<Timer> {
   Widget build(BuildContext context) {
     return TimerServiceProvider(
       service: timerService,
-      child: OutlineButton(
-        onPressed: _toggleTimer,
-        borderSide: BorderSide(color: color, width: 1.0),
-        child: AnimatedBuilder(
-          animation: timerService,
-          builder: (context, child) => Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image(image: icon, height: 20.0), 
-              Container(width: 20.0),
-              Text(_formatDuration(timerService.currentDuration), style: TextStyles.fixed(context, fontSize: 16.0))
-            ],
+      child: AnimatedBuilder(
+        animation: timerService,
+        builder: (context, child) => Container(
+          color: timerService.isRunning ? color.withAlpha(30) : Colors.transparent,
+          child: OutlineButton(
+            onPressed: _toggleTimer,
+            borderSide: BorderSide(color: color, width: 1.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image(image: icon, height: 20.0), 
+                Container(width: 16.0),
+                Text(_formatDuration(timerService.currentDuration), style: TextStyles.fixed(context, fontSize: 16.0))
+              ],
+            ),
           ),
         ),
       ),
