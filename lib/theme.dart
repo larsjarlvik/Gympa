@@ -7,7 +7,7 @@ class TextStyles {
   }) {
     return Theme.of(context).textTheme.body1.copyWith(
       fontSize: 14.0,
-      height: 1.4,
+      height: 1.0,
       fontWeight: fontWeight,
       color: Color.fromARGB(alpha, 239, 252, 255),
     );
@@ -19,11 +19,13 @@ class TextStyles {
   }
 
   static TextStyle fixed(BuildContext context, {
+    fontSize: 14.0,
     fontWeight: FontWeight.w600,
     alpha: 255
   }) {
     return body(context, fontWeight: fontWeight).copyWith(
       fontFamily: 'Hasklig',
+      fontSize: fontSize,
     );
   }
 }

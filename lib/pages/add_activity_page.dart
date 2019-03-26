@@ -4,6 +4,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:gympa/api/requests.dart';
 import 'package:gympa/components/spinner.dart';
 import 'package:gympa/components/page_container.dart';
+import 'package:gympa/components/timer.dart';
 import 'package:gympa/models/activities.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +15,7 @@ class AddActivityPage extends StatefulWidget {
   _ActivityListPage createState() => _ActivityListPage();
 }
 
-class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
+class _ActivityListPage extends State<AddActivityPage> with RouteAware {
   Activities activities;
   bool saving = false;
 
@@ -45,7 +46,22 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware  {
           _buildActivityOption('Gym', activities.gym, (value) => setState(() => activities.gym = value)),
           _buildActivityOption('Sport', activities.sport, (value) => setState(() => activities.sport = value)),
           _buildActivityOption('Running', activities.running, (value) => setState(() => activities.running = value)),
-          _buildActivityOption('Walking', activities.walking, (value) => setState(() => activities.walking = value))
+          _buildActivityOption('Walking', activities.walking, (value) => setState(() => activities.walking = value)),
+          Flexible(
+            child: GridView.count(
+              padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0),
+              crossAxisCount: 2,
+              childAspectRatio: 4,
+              crossAxisSpacing: 20.0,
+              mainAxisSpacing: 20.0,
+              children: [
+                Timer(Color(0xffc015e0), AssetImage('assets/gym.png')),
+                Timer(Color(0xffe71f7f), AssetImage('assets/sport.png')),
+                Timer(Color(0xff09e3a9), AssetImage('assets/running.png')),
+                Timer(Color(0xffeb9339), AssetImage('assets/walking.png')),
+              ],
+            )
+          ),
         ],
       ),
       actionButton: FloatingActionButton(
