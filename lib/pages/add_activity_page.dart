@@ -49,7 +49,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware {
           _buildActivityOption('Walking', activities.walking, (value) => setState(() => activities.walking = value)),
           Flexible(
             child: GridView.count(
-              padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0),
+              padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
               crossAxisCount: 2,
               childAspectRatio: 4,
               crossAxisSpacing: 20.0,
@@ -74,7 +74,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware {
 
   _buildDatePicker() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 10.0),
+      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -96,7 +96,7 @@ class _ActivityListPage extends State<AddActivityPage> with RouteAware {
 
   _buildActivityOption(String name, int minutes, void Function(int) callback) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 0.0),
+      padding: EdgeInsets.fromLTRB(8.0, 24.0, 8.0, 0.0),
       child: Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(8.0, 0.0, 14.0, 5.0),
